@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { currentSlide, openDeck, redo, undo, useEditor } from '../store/editor';
+import { currentSlide, openDeck, redo, setToast, undo, useEditor } from '../store/editor';
 import { flushSave, loadDeck } from '../store/storage';
 import {
   clearSelection,
@@ -221,8 +221,14 @@ export function EditorPage({ id }: { id: string }) {
     loadDeck(id)
       .then((d) => {
         if (!alive) return;
-        if (d) openDeck(d);
-        else setMissing(true);
+        if (d) {
+          openDeck(d);
+          const notice = sessionStorage.getItem('deckforge-notice');
+          if (notice) {
+            sessionStorage.removeItem('deckforge-notice');
+            setToast(notice, 7000);
+          }
+        } else setMissing(true);
       })
       .catch(() => setMissing(true));
     return () => {

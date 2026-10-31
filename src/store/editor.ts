@@ -105,13 +105,13 @@ function sanitizeSelection() {
   set({ selection: s.selection.filter((id) => els.some((e) => e.id === id)) });
 }
 
-export function setToast(msg: string | null) {
+export function setToast(msg: string | null, ms = 2600) {
   set({ toast: msg });
   if (msg) {
     const at = msg;
     setTimeout(() => {
       if (get().toast === at) set({ toast: null });
-    }, 2600);
+    }, ms);
   }
 }
 

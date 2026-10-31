@@ -28,6 +28,7 @@ function timeAgo(t: number) {
 export function Home() {
   const [decks, setDecks] = useState<Deck[] | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [busy, setBusy] = useState(false);
   const fileRef = useRef<HTMLInputElement>(null);
   const previews = useMemo(() => TEMPLATES.map((t) => ({ t, deck: createFromTemplate(t.id) })), []);
 
@@ -45,11 +46,26 @@ export function Home() {
 
   const importFile = async (file: File) => {
     try {
+      setError(null);
+      if (/\.pptx$/i.test(file.name)) {
+        setBusy(true);
+        const { importPptx } = await import('../io/importPptx');
+        const { deck, skipped } = await importPptx(file);
+        await saveDeck(deck);
+        sessionStorage.setItem(
+          'deckforge-notice',
+          `Imported ${deck.slides.length} slide${deck.slides.length === 1 ? '' : 's'} from PowerPoint.${skipped.length ? ` Not carried over: ${skipped.join(', ')}.` : ''}`,
+        );
+        navigate(`#/d/${deck.id}`);
+        return;
+      }
       const deck = await readDeckFile(file);
       await saveDeck(deck);
       navigate(`#/d/${deck.id}`);
     } catch (e) {
       setError((e as Error).message);
+    } finally {
+      setBusy(false);
     }
   };
 
@@ -61,13 +77,13 @@ export function Home() {
           <span>Deckforge</span>
         </div>
         <p className="home-tag">Design like Canva, control like PowerPoint. Works offline, exports real .pptx files, free and open source.</p>
-        <button className="btn ghost" onClick={() => fileRef.current?.click()}>
-          <FolderOpen size={16} /> Open a deck file
+        <button className="btn ghost" onClick={() => fileRef.current?.click()} disabled={busy}>
+          <FolderOpen size={16} /> {busy ? 'Opening…' : 'Open PowerPoint or deck file'}
         </button>
         <input
           ref={fileRef}
           type="file"
-          accept={`.json,${DECK_FILE_EXT}`}
+          accept={`.pptx,.json,${DECK_FILE_EXT}`}
           hidden
           onChange={(e) => {
             const f = e.target.files?.[0];
@@ -105,7 +121,7 @@ export function Home() {
           <p className="muted">Loading…</p>
         ) : decks.length === 0 ? (
           <div className="empty">
-            <p>No decks yet. Pick a starting point above, or open a {DECK_FILE_EXT} file.</p>
+            <p>No decks yet. Pick a starting point above, or open a PowerPoint (.pptx) or {DECK_FILE_EXT} file.</p>
             <button className="btn primary" onClick={() => create('blank')}>
               <Plus size={16} /> New blank deck
             </button>

@@ -2384,7 +2384,7 @@ kbd {
 }
 
 @media (max-width: 1280px) {
-  .tb-btn span {
+  .topbar .tb-btn span {
     display: none;
   }
 }
@@ -2393,7 +2393,6 @@ kbd {
   .editor-body {
     grid-template-columns: 180px minmax(0, 1fr) 270px;
   }
-  .tb-btn span,
   .save-badge {
     display: none;
   }
