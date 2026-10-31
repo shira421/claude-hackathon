@@ -29,7 +29,7 @@ export async function readDeckFile(file: File): Promise<Deck> {
   try {
     data = JSON.parse(await file.text());
   } catch {
-    throw new Error(`${file.name} is not a OpenSlides file. Choose a file ending in ${DECK_FILE_EXT}.`);
+    throw new Error(`${file.name} is not an OpenSlides file. Choose a file ending in ${DECK_FILE_EXT}.`);
   }
   if (!data || !Array.isArray(data.slides) || !Array.isArray(data.layouts) || !data.theme || !data.size) {
     throw new Error(`${file.name} is missing slides or a theme, so it can't be opened.`);
