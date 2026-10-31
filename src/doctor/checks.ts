@@ -1,3 +1,5 @@
+import { useEffect, useState } from 'react';
+import { useEditor } from '../store/editor';
 import type { Deck, Slide, SlideElement, TextElement } from '../model/types';
 import { aabb, getLayout, htmlToText, placeholderKind, resolveElement, slideBackground } from '../model/resolve';
 import { backgroundColor, contrastRatio, resolveColor, resolveFont, toHex } from '../model/theme';
@@ -103,4 +105,26 @@ export function runChecks(deck: Deck): Issue[] {
 
 function label(el: SlideElement) {
   return { text: 'A text box', shape: 'A shape', image: 'An image', chart: 'A chart', table: 'A table' }[el.type];
+}
+
+// ---------- shared, debounced access for the toolbar badges ----------
+
+
+let cache: { deck: Deck | null; issues: Issue[] } = { deck: null, issues: [] };
+
+export function runChecksCached(deck: Deck): Issue[] {
+  if (cache.deck !== deck) cache = { deck, issues: runChecks(deck) };
+  return cache.issues;
+}
+
+/** Issues for the open deck, recomputed shortly after editing pauses (not on every drag frame). */
+export function useIssues(): Issue[] {
+  const deck = useEditor((s) => s.deck);
+  const [issues, setIssues] = useState<Issue[]>(() => (deck ? runChecksCached(deck) : []));
+  useEffect(() => {
+    if (!deck) return;
+    const t = setTimeout(() => setIssues(runChecksCached(deck)), 250);
+    return () => clearTimeout(t);
+  }, [deck]);
+  return issues;
 }

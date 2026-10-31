@@ -10,7 +10,7 @@ import { DesignPanel } from './DesignPanel';
 import { CheckPanel } from './CheckPanel';
 import { OutlinePanel } from './OutlinePanel';
 import { SHAPE_LABELS } from '../render/shapes';
-import { runChecks } from '../doctor/checks';
+import { useIssues } from '../doctor/checks';
 import { useMemo } from 'react';
 
 const TABS: { id: Panel; label: string }[] = [
@@ -23,8 +23,7 @@ const TABS: { id: Panel; label: string }[] = [
 
 export function Inspector() {
   const panel = useEditor((s) => s.panel);
-  const deck = useEditor((s) => s.deck)!;
-  const count = useMemo(() => runChecks(deck).length, [deck]);
+  const count = useIssues().length;
   return (
     <aside className="inspector">
       <nav className="insp-tabs" role="tablist">

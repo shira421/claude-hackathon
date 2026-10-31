@@ -2,7 +2,7 @@ import { useMemo } from 'react';
 import { CircleAlert, Info, TriangleAlert, CheckCircle2 } from 'lucide-react';
 import { useEditor } from '../store/editor';
 import { editElements, goToSlide } from '../store/actions';
-import { colorBehind, runChecks, type Issue } from '../doctor/checks';
+import { colorBehind, runChecksCached, type Issue } from '../doctor/checks';
 import { aabb, getLayout, resolveElement } from '../model/resolve';
 import { contrastRatio } from '../model/theme';
 
@@ -63,7 +63,7 @@ const FIX_LABEL: Record<string, string> = { offslide: 'Move onto slide', contras
 
 export function CheckPanel() {
   const deck = useEditor((s) => s.deck)!;
-  const issues = useMemo(() => runChecks(deck), [deck]);
+  const issues = useMemo(() => runChecksCached(deck), [deck]);
   const counts = { error: 0, warning: 0, tip: 0 };
   issues.forEach((i) => counts[i.severity]++);
   return (

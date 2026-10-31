@@ -30,7 +30,7 @@ import { Popover } from './ui';
 import { SHAPE_LABELS, shapePath } from '../render/shapes';
 import type { ChartType, ShapeKind } from '../model/types';
 import { navigate } from '../router';
-import { runChecks } from '../doctor/checks';
+import { useIssues } from '../doctor/checks';
 import { exportDeckFile } from '../io/deckfile';
 
 const SHAPES: ShapeKind[] = ['rect', 'roundRect', 'ellipse', 'triangle', 'diamond', 'hexagon', 'chevron', 'star', 'line', 'arrow'];
@@ -107,7 +107,7 @@ export function TopBar() {
   const imgRef = useRef<HTMLInputElement>(null);
   const [busy, setBusy] = useState<string | null>(null);
   useEffect(() => setTitle(deck.title), [deck.title]);
-  const issues = useMemo(() => runChecks(deck), [deck]);
+  const issues = useIssues();
   const errors = issues.filter((i) => i.severity === 'error').length;
   const layoutName = target.kind === 'layout' ? deck.layouts.find((l) => l.id === target.layoutId)?.name : null;
 
