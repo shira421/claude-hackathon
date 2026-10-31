@@ -22,6 +22,8 @@ import {
   Type,
   Undo2,
   ChevronDown,
+  SlidersHorizontal,
+  Sparkles,
 } from 'lucide-react';
 import { currentSlide, redo, setToast, undo, useEditor } from '../store/editor';
 import { exitLayoutEditing, insertChart, insertImageFiles, insertShape, insertTable, insertText, renameDeck } from '../store/actions';
@@ -99,6 +101,7 @@ function SaveBadge() {
 }
 
 export function TopBar() {
+  const inspectorOpen = useEditor((s) => s.inspectorOpen);
   const deck = useEditor((s) => s.deck)!;
   const target = useEditor((s) => s.target);
   const canUndo = useEditor((s) => s.past.length > 0);
@@ -248,6 +251,9 @@ export function TopBar() {
 
       <div className="tb-spacer" />
 
+      <button className="tb-btn ai-top-btn" onClick={() => useEditor.setState({ studioTab: 'ai' })} title="Design with Claude"><Sparkles size={17} /><span>Ask Claude</span></button>
+      <button className="tb-btn" aria-label="Toggle properties" aria-pressed={inspectorOpen} onClick={() => useEditor.setState({ inspectorOpen: !useEditor.getState().inspectorOpen })}><SlidersHorizontal size={17} /><span>Properties</span></button>
+
       {layoutName ? (
         <button className="btn layout-done" onClick={exitLayoutEditing}>
           Done editing “{layoutName}”
@@ -258,7 +264,7 @@ export function TopBar() {
         </button>
       )}
 
-      <button className={`tb-btn check-btn${errors ? ' has-errors' : ''}`} onClick={() => useEditor.setState({ panel: 'check' })} title="Check the deck for readability problems">
+      <button className={`tb-btn check-btn${errors ? ' has-errors' : ''}`} onClick={() => useEditor.setState({ panel: 'check', inspectorOpen: true })} title="Check the deck for readability problems">
         <Stethoscope size={17} />
         {issues.length > 0 && <span className="count">{issues.length}</span>}
       </button>

@@ -15,6 +15,7 @@ import type { SlideElement, TableElement, TextElement } from '../model/types';
 import { SlideView } from '../render/SlideView';
 import { scaleInlineFontSizes, forgetSelection } from '../render/richtext';
 import { snapBox, snapEdge } from './snap';
+import { ELEMENT_DRAG_TYPE, insertLibraryElement } from '../studio/library';
 
 type Session =
   | { kind: 'move'; start: { x: number; y: number }; origin: Map<string, { x: number; y: number }>; startBox: Box; moved: boolean }
@@ -396,9 +397,15 @@ export function Canvas() {
       ref={matRef}
       onPointerDown={onMatPointerDown}
       onDragOver={(e) => {
-        if (e.dataTransfer.types.includes('Files')) e.preventDefault();
+        if (e.dataTransfer.types.includes('Files') || e.dataTransfer.types.includes(ELEMENT_DRAG_TYPE)) e.preventDefault();
       }}
       onDrop={(e) => {
+        const elementData = e.dataTransfer.getData(ELEMENT_DRAG_TYPE);
+        if (elementData) {
+          e.preventDefault();
+          try { const { id, color } = JSON.parse(elementData); if (typeof id === 'string' && /^#[0-9a-f]{6}$/i.test(color)) insertLibraryElement(id, color, toLogical(e.clientX, e.clientY)); } catch { /* ignore invalid drag data */ }
+          return;
+        }
         const files = Array.from(e.dataTransfer.files);
         if (!files.length) return;
         e.preventDefault();

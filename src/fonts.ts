@@ -44,3 +44,5 @@ import '@fontsource/jetbrains-mono/latin-400-italic.css';
 import '@fontsource/jetbrains-mono/latin-700-italic.css';
 import '@fontsource/instrument-sans/latin-500.css';
 import '@fontsource/instrument-sans/latin-600.css';
+
+import './styles/extra-fonts.css';

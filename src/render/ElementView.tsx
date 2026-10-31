@@ -1,4 +1,4 @@
-import { memo, useEffect, useLayoutEffect, useRef, type CSSProperties, type PointerEvent as RPointerEvent, type ReactNode } from 'react';
+import { memo, useMemo, useEffect, useLayoutEffect, useRef, type CSSProperties, type PointerEvent as RPointerEvent, type ReactNode } from 'react';
 import type { Deck, ImageElement, ShapeElement, SlideElement, TableElement, TextElement, Theme } from '../model/types';
 import { fontStack, resolveColor, resolveFont } from '../model/theme';
 import { applyTokens, isEmptyHtml, type TokenContext } from '../model/resolve';
@@ -52,7 +52,7 @@ function TextEditable({ el, theme, listDefault, onCommit, onMeasure }: { el: Tex
   const committed = useRef(false);
   useLayoutEffect(() => {
     const node = ref.current!;
-    node.innerHTML = el.html && !isEmptyHtml(el.html) ? el.html : listDefault ? '<ul><li><br></li></ul>' : '<p><br></p>';
+    node.innerHTML = el.html && !isEmptyHtml(el.html) ? sanitizeHtml(el.html) : listDefault ? '<ul><li><br></li></ul>' : '<p><br></p>';
     node.focus();
     document.execCommand('defaultParagraphSeparator', false, 'p');
     const range = document.createRange();
@@ -129,7 +129,8 @@ function TextBlock({ el, deck, mode, tokens, prompt, editing, listDefault, onTex
   const theme = deck.theme;
   const innerRef = useRef<HTMLDivElement>(null);
   const empty = isEmptyHtml(el.html);
-  const html = applyTokens(el.html, tokens);
+  const cleanHtml = useMemo(() => sanitizeHtml(el.html), [el.html]);
+  const html = applyTokens(cleanHtml, tokens);
   useEffect(() => {
     if (mode !== 'edit' || editing || !el.autoHeight || !onTextMeasure || !innerRef.current) return;
     const h = innerRef.current.offsetHeight + el.padding * 2;

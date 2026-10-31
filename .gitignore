@@ -4,3 +4,13 @@ dev-dist
 *.log
 .DS_Store
 test-output
+
+release
+.env
+.env.*
+!.env.example
+*.enc
+desktop/node_modules
+
+.qa/
+studio-*.png

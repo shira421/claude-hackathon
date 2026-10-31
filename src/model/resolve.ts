@@ -48,9 +48,9 @@ export function placeholderKind(deck: Deck, slide: Slide | null, el: SlideElemen
 
 export function htmlToText(html: string): string {
   if (!html) return '';
-  const div = document.createElement('div');
+  const div = document.createElement('template');
   div.innerHTML = html.replace(/<\/(p|li|div)>/gi, '\n</$1>').replace(/<br\s*\/?>/gi, '\n');
-  return (div.textContent ?? '').replace(/\n{2,}/g, '\n').trim();
+  return (div.content.textContent ?? '').replace(/\n{2,}/g, '\n').trim();
 }
 
 export function isEmptyHtml(html: string): boolean {

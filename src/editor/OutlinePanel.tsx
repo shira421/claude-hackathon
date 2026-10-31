@@ -57,7 +57,7 @@ export function parseOutline(text: string): Draft[] {
   return out;
 }
 
-function draftToSlide(deck: Deck, d: Draft): Slide {
+export function draftToSlide(deck: Deck, d: Draft): Slide {
   const layout = getLayout(deck, d.layout);
   const block = (lines: string[]) => (lines.length === 0 ? '' : d.bulleted ? bullets(lines) : lines.map((l) => `<p>${escapeHtml(l)}</p>`).join(''));
   const content: Partial<Record<PlaceholderKind, string>> = {
