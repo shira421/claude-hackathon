@@ -11,6 +11,8 @@ export function resizeDeck(deck: Deck, size: DeckSize, asCopy: boolean): Deck {
   const sx = size.w / deck.size.w;
   const sy = size.h / deck.size.h;
   const s = Math.min(sx, sy);
+  // Type scales with the geometric mean so a wide-to-square resize doesn't shrink text as much as the boxes.
+  const ts = Math.sqrt(sx * sy);
 
   const fitEl = <T extends SlideElement>(el: T): T => {
     const e = structuredClone(el) as T;
@@ -29,8 +31,10 @@ export function resizeDeck(deck: Deck, size: DeckSize, asCopy: boolean): Deck {
       h = el.h * sy;
     }
     if (el.type === 'text') {
-      // Text boxes keep their margins: widen to the new column width.
+      // Text boxes follow the new column width and get the extra height.
       w = Math.min(el.w * sx, size.w * 0.92);
+      // Narrower boxes wrap onto more lines; vertical space scales with the slide height, so give it all.
+      h = el.h * sy;
     }
     e.w = w;
     e.h = h;
@@ -42,16 +46,16 @@ export function resizeDeck(deck: Deck, size: DeckSize, asCopy: boolean): Deck {
     if (edgeR) e.x = size.w - w;
     if (edgeB) e.y = size.h - h;
     if (e.type === 'text' && el.type === 'text') {
-      e.style.fontSize = Math.max(8, Math.round(el.style.fontSize * s));
-      e.html = scaleInlineFontSizes(el.html, s);
+      e.style.fontSize = Math.max(8, Math.round(el.style.fontSize * ts));
+      e.html = scaleInlineFontSizes(el.html, ts);
       e.padding = Math.round(el.padding * s);
     }
     if (e.type === 'shape' && el.type === 'shape') {
       e.strokeWidth = Math.max(el.strokeWidth ? 1 : 0, Math.round(el.strokeWidth * s));
       e.radius = el.radius * s;
     }
-    if (e.type === 'chart' && el.type === 'chart') e.fontSize = Math.max(8, Math.round(el.fontSize * s));
-    if (e.type === 'table' && el.type === 'table') e.style.fontSize = Math.max(8, Math.round(el.style.fontSize * s));
+    if (e.type === 'chart' && el.type === 'chart') e.fontSize = Math.max(8, Math.round(el.fontSize * ts));
+    if (e.type === 'table' && el.type === 'table') e.style.fontSize = Math.max(8, Math.round(el.style.fontSize * ts));
     if (e.type === 'image' && el.type === 'image') e.radius = el.radius * s;
     return e;
   };
@@ -66,8 +70,8 @@ export function resizeDeck(deck: Deck, size: DeckSize, asCopy: boolean): Deck {
       // Geometry comes from the (already resized) layout; only the type needs scaling.
       const c = structuredClone(e);
       if (c.type === 'text' && e.type === 'text') {
-        c.html = scaleInlineFontSizes(e.html, s);
-        if (!e.ph.style) c.style.fontSize = Math.max(8, Math.round(e.style.fontSize * s));
+        c.html = scaleInlineFontSizes(e.html, ts);
+        if (!e.ph.style) c.style.fontSize = Math.max(8, Math.round(e.style.fontSize * ts));
       }
       return c;
     }),
