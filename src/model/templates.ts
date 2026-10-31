@@ -24,6 +24,12 @@ export interface TemplateInfo {
 
 export const TEMPLATES: TemplateInfo[] = [
   { id: 'blank', name: 'Blank deck', description: 'One title slide and the full layout set.', themeId: 'mat', sizeId: '16:9', variant: 'bar' },
+  { id: 'marketing', name: 'Marketing plan', description: 'Audience, campaign, channels and measures.', themeId: 'cobalt', sizeId: '16:9', variant: 'block' },
+  { id: 'creative', name: 'Creative studio', description: 'A bold portfolio with a project story.', themeId: 'neon', sizeId: '16:9', variant: 'minimal' },
+  { id: 'nature', name: 'Nature & impact', description: 'A calm story about a better future.', themeId: 'botanic', sizeId: '16:9', variant: 'minimal' },
+  { id: 'team', name: 'Group project', description: 'Context, approach, responsibilities and next steps.', themeId: 'aurora', sizeId: '16:9', variant: 'bar' },
+  { id: 'proposal', name: 'Business proposal', description: 'Scope, timeline, investment and outcomes.', themeId: 'ocean', sizeId: '16:9', variant: 'block' },
+  { id: 'thesis', name: 'Thesis defence', description: 'Research question, method and contribution.', themeId: 'paper', sizeId: '16:9', variant: 'minimal' },
   { id: 'pitch', name: 'Startup pitch', description: 'Problem, traction chart, big number and ask.', themeId: 'studio', sizeId: '16:9', variant: 'block' },
   { id: 'lecture', name: 'Lecture', description: 'Objectives, comparison table and an exercise.', themeId: 'campus', sizeId: '16:9', variant: 'bar' },
   { id: 'report', name: 'Research update', description: 'Trend chart, findings table and next steps.', themeId: 'editorial', sizeId: '16:9', variant: 'minimal' },
@@ -53,6 +59,30 @@ export function createFromTemplate(templateId: string, title?: string): Deck {
   const p = (t: string) => paragraphs(t);
   const contentY = m * 0.55 + 28 * u + 150 * u + 30 * u;
   const contentH = H - contentY - m - 20 * u;
+
+  const stories: Record<string, { headline:string; subtitle:string; points:string[] }> = {
+    marketing: {headline:'Make your next move.',subtitle:'Marketing plan / Strategy, story, momentum',points:['Who we want to reach','What we want them to remember','How we will measure progress']},
+    creative: {headline:'Creative\nsolutions.',subtitle:'Selected work / Ideas made visible',points:['The brief and its constraints','The idea behind the design','What we learned along the way']},
+    nature: {headline:'A future\nworth growing.',subtitle:'Nature & impact / Small changes, shared progress',points:['The challenge we see','The change we can make','The evidence we need']},
+    team: {headline:'Better,\ntogether.',subtitle:'Group project / One team, a shared direction',points:['Our goal and why it matters','Our approach and responsibilities','What comes next']},
+    proposal: {headline:'Let’s build\nwhat’s next.',subtitle:'Business proposal / A clear path forward',points:['The opportunity and expected outcomes','Scope, milestones and ownership','Investment and next steps']},
+    thesis: {headline:'A new\nperspective.',subtitle:'Thesis defence / Research, evidence, contribution',points:['The research question','Method, findings and limitations','Contribution and future work']},
+  };
+  const story=stories[info.id];
+  if(story){
+    const cover=add('blank',{});
+    cover.elements.push(
+      makeShape('ellipse',W*.69,-H*.18,H*.72,H*.72,{fill:'theme:secondary',opacity:.3}),
+      makeShape('ellipse',W*.81,H*.32,H*.4,H*.4,{fill:'theme:accent',opacity:.8}),
+      makeText(m,H*.12,W*.7,48*u,p(info.name.toUpperCase()),{fontSize:22*u,letterSpacing:.15,color:'theme:muted'}),
+      makeText(m,H*.3,W*.72,H*.43,p(story.headline),{fontFamily:'theme:heading',fontSize:116*u,bold:true,lineHeight:1.02},{autoHeight:false}),
+      makeText(m,H*.82,W*.75,65*u,p(story.subtitle),{fontSize:26*u,color:'theme:muted'}),
+    );
+    add('title-content',{title:p('The story so far'),body:bullets(story.points)});
+    add('two-content',{title:p('Our approach'),body:bullets(['Add your first finding or proposal','Support it with evidence']),body2:bullets(['Explain the next step','Name an owner and a date'])});
+    add('section',{title:p('Let’s begin.'),subtitle:p('Your next step starts here.')});
+    return deck;
+  }
 
   switch (info.id) {
     case 'blank':

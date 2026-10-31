@@ -28,6 +28,8 @@ import { Dialogs } from './Dialogs';
 import { navigate } from '../router';
 import { makeText, paragraphs } from '../model/factory';
 import type { Asset, SlideElement } from '../model/types';
+import { StudioSidebar } from '../studio/StudioSidebar';
+import '../styles/studio.css';
 
 const CLIP_MIME = 'application/x-deckforge';
 
@@ -215,6 +217,8 @@ function Toast() {
 
 export function EditorPage({ id }: { id: string }) {
   const deck = useEditor((s) => s.deck);
+  const studioTab = useEditor((s) => s.studioTab);
+  const inspectorOpen = useEditor((s) => s.inspectorOpen);
   const [missing, setMissing] = useState(false);
   useEffect(() => {
     let alive = true;
@@ -255,16 +259,17 @@ export function EditorPage({ id }: { id: string }) {
   if (!deck || deck.id !== id) return <div className="center-msg muted">Opening deck…</div>;
 
   return (
-    <div className="editor">
+    <div className={`editor studio-editor${studioTab ? ' has-studio' : ''}${inspectorOpen ? ' has-inspector' : ''}`}>
       <TopBar />
       <div className="editor-body">
-        <SlidePanel />
+        <StudioSidebar />
         <main className="center-col">
           <ContextBar />
           <Canvas />
           <NotesPane />
+          <SlidePanel />
         </main>
-        <Inspector />
+        {inspectorOpen && <Inspector />}
       </div>
       <Dialogs />
       <Toast />

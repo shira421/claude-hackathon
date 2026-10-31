@@ -4,6 +4,7 @@ import type { Asset, Deck, EditTarget, Slide, SlideElement } from '../model/type
 
 export type Panel = 'selection' | 'slide' | 'design' | 'check' | 'outline';
 export type Dialog = null | 'resize' | 'chart' | 'shortcuts' | 'layouts';
+export type StudioTab = 'templates' | 'elements' | 'text' | 'themes' | 'uploads' | 'ai' | 'agents';
 
 export interface Guide {
   axis: 'x' | 'y';
@@ -28,6 +29,8 @@ export interface EditorState {
   chartEditId: string | null;
   notesOpen: boolean;
   toast: string | null;
+  studioTab: StudioTab | null;
+  inspectorOpen: boolean;
 }
 
 const initial: EditorState = {
@@ -44,8 +47,10 @@ const initial: EditorState = {
   clipboard: null,
   dialog: null,
   chartEditId: null,
-  notesOpen: true,
+  notesOpen: false,
   toast: null,
+  studioTab: 'elements',
+  inspectorOpen: false,
 };
 
 export const useEditor = create<EditorState>(() => ({ ...initial }));

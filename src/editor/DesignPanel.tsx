@@ -7,7 +7,7 @@ import { THEME_COLOR_KEYS } from '../model/types';
 import { SIZE_PRESETS } from '../model/factory';
 import { Section } from './ui';
 
-export function DesignPanel() {
+export function DesignPanel({ hideThemes = false }: { hideThemes?: boolean }) {
   const deck = useEditor((s) => s.deck)!;
   const theme = deck.theme;
   const logoRef = useRef<HTMLInputElement>(null);
@@ -16,7 +16,7 @@ export function DesignPanel() {
 
   return (
     <div>
-      <Section title="Themes">
+      {!hideThemes && <Section title="Themes">
         <p className="muted small">A theme sets the brand colours and fonts. Everything that uses them updates at once.</p>
         <div className="theme-grid">
           {THEME_PRESETS.map((t) => (
@@ -35,7 +35,7 @@ export function DesignPanel() {
             </button>
           ))}
         </div>
-      </Section>
+      </Section>}
 
       <Section title="Brand colours">
         <div className="brand-colors">

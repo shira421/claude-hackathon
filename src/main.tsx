@@ -12,6 +12,6 @@ createRoot(document.getElementById('root')!).render(
 );
 
 // Offline support: caches the app shell and fonts after the first visit.
-if ('serviceWorker' in navigator && import.meta.env.PROD) {
+if ('serviceWorker' in navigator && import.meta.env.PROD && !window.deckforgeDesktop) {
   registerSW({ immediate: true });
 }

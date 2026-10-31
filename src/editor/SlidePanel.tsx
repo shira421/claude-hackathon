@@ -80,7 +80,7 @@ export function SlidePanel() {
               if (!dragId) return;
               e.preventDefault();
               const r = (e.currentTarget as HTMLElement).getBoundingClientRect();
-              setDropAt(e.clientY < r.top + r.height / 2 ? i : i + 1);
+              setDropAt(e.clientX < r.left + r.width / 2 ? i : i + 1);
             }}
             onDrop={(e) => {
               e.preventDefault();

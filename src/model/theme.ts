@@ -15,6 +15,13 @@ export const FONTS: { name: string; category: 'sans' | 'serif' | 'display' | 'mo
   { name: 'Lora', category: 'serif' },
   { name: 'Source Serif 4', category: 'serif' },
   { name: 'JetBrains Mono', category: 'mono' },
+  { name: 'DejaVu Sans', category: 'sans' },
+  { name: 'DejaVu Serif', category: 'serif' },
+  { name: 'DejaVu Sans Mono', category: 'mono' },
+  { name: 'Latin Modern Roman Caps', category: 'display' },
+  { name: 'Latin Modern Roman Dunhill', category: 'display' },
+  { name: 'Latin Modern Mono Caps', category: 'mono' },
+  { name: 'Latin Modern Sans Demi Cond', category: 'sans' },
 ];
 
 export const THEME_PRESETS: Theme[] = [
@@ -130,6 +137,18 @@ export const THEME_PRESETS: Theme[] = [
     },
     fonts: { heading: 'JetBrains Mono', body: 'Inter' },
   },
+  {"id": "aurora", "name": "Aurora", "colors": {"background": "#f5f1ff", "surface": "#e8defc", "text": "#251a44", "muted": "#6d6186", "primary": "#7654cc", "secondary": "#31aaa6", "accent": "#efb85a"}, "fonts": {"heading": "Space Grotesk", "body": "Inter"}},
+  {"id": "cobalt", "name": "Cobalt", "colors": {"background": "#09182e", "surface": "#152a48", "text": "#f7faff", "muted": "#a1b3ce", "primary": "#5a93ff", "secondary": "#56d2d8", "accent": "#ffbc7a"}, "fonts": {"heading": "Montserrat", "body": "Inter"}},
+  {"id": "sorbet", "name": "Sorbet", "colors": {"background": "#fff5f1", "surface": "#fce2d8", "text": "#512f38", "muted": "#8b626b", "primary": "#d94e70", "secondary": "#f4a36f", "accent": "#8456b1"}, "fonts": {"heading": "Poppins", "body": "Instrument Sans"}},
+  {"id": "paper", "name": "Paper & ink", "colors": {"background": "#fbf8ef", "surface": "#ece5d6", "text": "#262520", "muted": "#726c5b", "primary": "#313d35", "secondary": "#9eaa81", "accent": "#bc784e"}, "fonts": {"heading": "DM Serif Display", "body": "Lora"}},
+  {"id": "neon", "name": "Neon lab", "colors": {"background": "#15121e", "surface": "#282238", "text": "#f9f4ff", "muted": "#b7a9cf", "primary": "#c6f56b", "secondary": "#b594ff", "accent": "#ff8bc4"}, "fonts": {"heading": "Space Grotesk", "body": "Inter"}},
+  {"id": "ocean", "name": "Ocean", "colors": {"background": "#edf9fc", "surface": "#d6eef4", "text": "#173b4a", "muted": "#557b89", "primary": "#137d9d", "secondary": "#2db8ab", "accent": "#f2bb61"}, "fonts": {"heading": "Instrument Sans", "body": "Inter"}},
+  {"id": "terracotta", "name": "Terracotta", "colors": {"background": "#faf0e5", "surface": "#edd6bf", "text": "#51362d", "muted": "#856656", "primary": "#b55437", "secondary": "#758c65", "accent": "#d7a74c"}, "fonts": {"heading": "Fraunces", "body": "Lora"}},
+  {"id": "candy", "name": "Candy shop", "colors": {"background": "#fff2fc", "surface": "#f6dcef", "text": "#422b50", "muted": "#816c8b", "primary": "#9c55bd", "secondary": "#40a8b7", "accent": "#ffb35e"}, "fonts": {"heading": "Bricolage Grotesque", "body": "Poppins"}},
+  {"id": "slate", "name": "Slate", "colors": {"background": "#f1f4f6", "surface": "#dee5eb", "text": "#273541", "muted": "#6a7a88", "primary": "#3c6481", "secondary": "#6f9d9b", "accent": "#b78d58"}, "fonts": {"heading": "Inter", "body": "Source Serif 4"}},
+  {"id": "lemon", "name": "Lemon press", "colors": {"background": "#fcfce8", "surface": "#eeefbd", "text": "#30351d", "muted": "#747948", "primary": "#536b30", "secondary": "#d0cb41", "accent": "#d78651"}, "fonts": {"heading": "Bricolage Grotesque", "body": "Instrument Sans"}},
+  {"id": "rose", "name": "Rose journal", "colors": {"background": "#fcf3f3", "surface": "#f0dfe1", "text": "#4c3338", "muted": "#876b71", "primary": "#b2677a", "secondary": "#9a8bac", "accent": "#c49a69"}, "fonts": {"heading": "Playfair Display", "body": "Source Serif 4"}},
+  {"id": "mono", "name": "Mono type", "colors": {"background": "#ffffff", "surface": "#efefef", "text": "#111111", "muted": "#666666", "primary": "#252525", "secondary": "#888888", "accent": "#ded5c5"}, "fonts": {"heading": "JetBrains Mono", "body": "Inter"}},
 ];
 
 export const COLOR_LABELS: Record<ThemeColorKey, string> = {
