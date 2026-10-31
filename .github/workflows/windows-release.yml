@@ -32,7 +32,7 @@ jobs:
         if: always()
         with:
           name: studio-browser-check
-          path: studio-smoke.png
+          path: studio-*.png
   windows:
     needs: verify
     runs-on: windows-latest

@@ -13,4 +13,4 @@ release
 desktop/node_modules
 
 .qa/
-studio-smoke.png
+studio-*.png

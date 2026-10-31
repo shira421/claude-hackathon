@@ -63,5 +63,11 @@ try{
   const {htmlToText}=await import('/src/model/resolve.ts');window.__injected=false;htmlToText('<img src="bad" onerror="window.__injected=true"><p>Safe</p>');await new Promise(r=>setTimeout(r,100));
   return {bytes:data.byteLength,media:Object.keys(zip.files).filter(f=>f.startsWith('ppt/media/')).length,slides:Object.keys(zip.files).filter(f=>/^ppt\/slides\/slide[0-9]+\.xml$/.test(f)).length,injected:window.__injected};
  });assert.ok(exports.bytes>5000);assert.ok(exports.media>=2);assert.equal(exports.slides,1);assert.equal(exports.injected,false);
+ await page.evaluate(async()=>{const {mutate,useEditor}=await import('/src/store/editor.ts');const {createFromTemplate}=await import('/src/model/templates.ts');const d=createFromTemplate('creative');mutate(deck=>{deck.title=d.title;deck.theme=d.theme;deck.layouts=d.layouts;deck.slides=d.slides;});useEditor.setState({slideId:d.slides[0].id,selection:[]});});
+ await page.screenshot({path:'studio-smoke.png',fullPage:true});
+ for(const [tab,file] of [['Themes','themes'],['Text','text'],['Claude AI','ai'],['Agents','agents']]){await rail.getByRole('button',{name:tab,exact:true}).click();await page.screenshot({path:`studio-${file}.png`,fullPage:true});}
+ await page.setViewportSize({width:1024,height:768});
+ const exportButton=page.getByRole('button',{name:'Export',exact:false}).first();const presentButton=page.getByRole('button',{name:'Present',exact:true});
+ for(const button of [exportButton,presentButton]){const b=await button.boundingBox();assert.ok(b&&b.x>=0&&b.x+b.width<=1024,'Primary action is outside laptop viewport');}
  assert.deepEqual(errors,[]);console.log('Browser smoke passed: galleries, themes, agents, mocked Claude request, saved elements, atomic undo, stale proposal guard, SVG rejection, every template.');
 }catch(error){await page.screenshot({path:'studio-smoke.png',fullPage:true});throw error;}finally{await browser.close();}
