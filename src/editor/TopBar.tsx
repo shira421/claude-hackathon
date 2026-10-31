@@ -251,7 +251,7 @@ export function TopBar() {
 
       <div className="tb-spacer" />
 
-      <button className="tb-btn ai-top-btn" onClick={() => useEditor.setState({ studioTab: 'ai' })} title="Design with Claude"><Sparkles size={17} /><span>Ask Claude</span></button>
+      <button className="tb-btn ai-top-btn" onClick={() => useEditor.setState({ studioTab: 'ai' })} title="Design with Claudia"><Sparkles size={17} /><span>Ask Claudia</span></button>
       <button className="tb-btn" aria-label="Toggle properties" aria-pressed={inspectorOpen} onClick={() => useEditor.setState({ inspectorOpen: !useEditor.getState().inspectorOpen })}><SlidersHorizontal size={17} /><span>Properties</span></button>
 
       {layoutName ? (
@@ -296,7 +296,7 @@ export function TopBar() {
               <span>For social posts or documents</span>
             </button>
             <button onClick={() => { close(); exportDeckFile(deck); }}>
-              <strong>Deck file (.deckforge.json)</strong>
+              <strong>Deck file (.openslides.json)</strong>
               <span>Back up or move this deck to another device</span>
             </button>
           </div>

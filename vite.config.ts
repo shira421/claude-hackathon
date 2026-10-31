@@ -16,8 +16,8 @@ export default defineConfig({
       registerType: 'autoUpdate',
       includeAssets: ['favicon.svg'],
       manifest: {
-        name: 'Deckforge',
-        short_name: 'Deckforge',
+        name: 'OpenSlides',
+        short_name: 'OpenSlides',
         description: 'An open-source slide deck editor that works offline and exports real PowerPoint files.',
         theme_color: '#2f4a3f',
         background_color: '#2f4a3f',

@@ -4,6 +4,11 @@ const fs=require('node:fs/promises');
 const path=require('node:path');
 const {callAnthropic}=require('./anthropic.cjs');
 const ROOT=path.join(__dirname,'..','dist');
+// Preserve the profile and origin so saved decks and encrypted keys survive the rename.
+const profilePath=path.join(app.getPath('appData'),'Deckforge');
+require('node:fs').mkdirSync(profilePath,{recursive:true});
+app.setPath('userData',profilePath);
+app.setName('OpenSlides');
 const ORIGIN='deckforge://app';
 const pending=new Map();
 let apiKey='', mainWindow;
@@ -17,7 +22,7 @@ function guardWindow(win){
   win.webContents.on('will-attach-webview',event=>event.preventDefault());
 }
 async function createWindow(){
-  mainWindow=new BrowserWindow({width:1500,height:960,minWidth:1024,minHeight:700,title:'Deckforge',backgroundColor:'#f7f7f2',autoHideMenuBar:true,webPreferences:{preload:path.join(__dirname,'preload.cjs'),contextIsolation:true,nodeIntegration:false,sandbox:true,webSecurity:true}});
+  mainWindow=new BrowserWindow({width:1500,height:960,minWidth:1024,minHeight:700,title:'OpenSlides',backgroundColor:'#f7f7f2',autoHideMenuBar:true,webPreferences:{preload:path.join(__dirname,'preload.cjs'),contextIsolation:true,nodeIntegration:false,sandbox:true,webSecurity:true}});
   guardWindow(mainWindow);
   mainWindow.webContents.setWindowOpenHandler(({url})=>{
     const u=new URL(url);
@@ -31,7 +36,7 @@ async function createWindow(){
     const timeout=setTimeout(()=>app.exit(1),30000);
     try{
       const result=await mainWindow.webContents.executeJavaScript(`(async()=>{await document.fonts.ready;for(let i=0;i<100;i++){if(document.querySelector('.template-card'))break;await new Promise(r=>setTimeout(r,50));}const hasUI=!!document.querySelector('.template-card');const bridge=window.deckforgeDesktop;const status=await bridge.keyStatus();return {hasUI,bridge:!!bridge,configured:status.configured,title:document.title};})()`);
-      console.log('Desktop smoke:',JSON.stringify(result));clearTimeout(timeout);app.exit(result.hasUI&&result.bridge?0:1);
+      console.log('Desktop smoke:',JSON.stringify(result));clearTimeout(timeout);app.exit(result.hasUI&&result.bridge&&result.title==='OpenSlides'?0:1);
     }catch{clearTimeout(timeout);app.exit(1);}
   }
 }

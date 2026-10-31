@@ -241,7 +241,7 @@ export function EditorPage({ id }: { id: string }) {
     };
   }, [id]);
   useEffect(() => {
-    if (deck) document.title = `${deck.title || 'Untitled deck'} | Deckforge`;
+    if (deck) document.title = `${deck.title || 'Untitled deck'} | OpenSlides`;
   }, [deck?.title]);
   useShortcuts();
   useClipboard();

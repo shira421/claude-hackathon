@@ -7,7 +7,7 @@ import { THEME_PRESETS, contrastRatio, hexToRgb, rgbToHex } from '../model/theme
 // ppt/presentation.xml lists the slides, each slide's spTree holds shapes,
 // pictures, tables and charts, and placeholders inherit position and type
 // sizes from their layout and master. We decode the subset that maps onto
-// Deckforge's model and report what we had to skip.
+// OpenSlides's model and report what we had to skip.
 
 const EMU_PER_PT = 12700;
 
