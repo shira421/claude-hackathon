@@ -58,7 +58,7 @@ const PROP_TAGS: Record<string, string[]> = {
 export function stripInline(html: string, props: string[]): string {
   if (!html) return html;
   const root = document.createElement('div');
-  root.innerHTML = html;
+  root.innerHTML = sanitizeHtml(html);
   root.querySelectorAll<HTMLElement>('[style]').forEach((n) => {
     for (const p of props) n.style.removeProperty(p);
     if (!n.getAttribute('style')) n.removeAttribute('style');

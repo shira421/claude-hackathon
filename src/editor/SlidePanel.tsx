@@ -6,10 +6,10 @@ import { SlideView } from '../render/SlideView';
 import type { Deck, Layout, Slide } from '../model/types';
 import { Popover } from './ui';
 
-const THUMB_W = 176;
+const thumbWidth = (deck: Deck) => Math.min(176, 100 * deck.size.w / deck.size.h);
 
 const SlideThumb = memo(function SlideThumb({ deck, slide, index }: { deck: Deck; slide: Slide; index: number }) {
-  return <SlideView deck={deck} slide={slide} mode="thumb" scale={THUMB_W / deck.size.w} index={index} />;
+  return <SlideView deck={deck} slide={slide} mode="thumb" scale={thumbWidth(deck) / deck.size.w} index={index} />;
 });
 
 export function LayoutThumb({ deck, layout, width }: { deck: Deck; layout: Layout; width: number }) {
@@ -48,8 +48,8 @@ export function SlidePanel() {
             const uses = deck.slides.filter((s) => s.layoutId === l.id).length;
             return (
               <button key={l.id} className={`thumb${target.layoutId === l.id ? ' active' : ''}`} onClick={() => enterLayoutEditing(l.id)}>
-                <div className="thumb-img" style={{ height: (THUMB_W * deck.size.h) / deck.size.w }}>
-                  <LayoutThumb deck={deck} layout={l} width={THUMB_W} />
+                <div className="thumb-img" style={{ width: thumbWidth(deck), height: (thumbWidth(deck) * deck.size.h) / deck.size.w }}>
+                  <LayoutThumb deck={deck} layout={l} width={thumbWidth(deck)} />
                 </div>
                 <span className="thumb-caption">
                   {l.name}
@@ -98,7 +98,7 @@ export function SlidePanel() {
           >
             <span className="thumb-num">{i + 1}</span>
             <button className={`thumb${slideId === s.id ? ' active' : ''}${s.hidden ? ' is-hidden' : ''}`} onClick={() => goToSlide(s.id)} aria-label={`Slide ${i + 1}`}>
-              <div className="thumb-img" style={{ height: (THUMB_W * deck.size.h) / deck.size.w }}>
+              <div className="thumb-img" style={{ width: thumbWidth(deck), height: (thumbWidth(deck) * deck.size.h) / deck.size.w }}>
                 <SlideThumb deck={deck} slide={s} index={i} />
               </div>
             </button>

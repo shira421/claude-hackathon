@@ -1,3 +1,4 @@
+import { sanitizeHtml } from '../render/richtext';
 import PptxGenJS from 'pptxgenjs';
 import { flushSync } from 'react-dom';
 import { createRoot } from 'react-dom/client';
@@ -37,7 +38,7 @@ interface RunBase {
 /** Converts our rich-text HTML into PptxGenJS text runs, keeping bold/italic/colour/size and bullets. */
 export function htmlToRuns(html: string, base: RunBase, ptPerPx: number, theme: Theme, align: string): PptxGenJS.TextProps[] {
   const root = document.createElement('div');
-  root.innerHTML = html;
+  root.innerHTML = sanitizeHtml(html);
   const paragraphs: { runs: PptxGenJS.TextProps[]; para: Record<string, unknown> }[] = [];
 
   const walk = (node: Node, style: RunBase & { strike: boolean }, out: PptxGenJS.TextProps[]) => {
