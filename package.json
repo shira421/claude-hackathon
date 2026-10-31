@@ -1,7 +1,7 @@
 {
-  "name": "deckforge",
+  "name": "openslides",
   "private": true,
-  "version": "0.2.0",
+  "version": "0.2.1",
   "type": "module",
   "license": "MIT",
   "scripts": {
@@ -49,5 +49,6 @@
     "vite": "^8.3.5",
     "vite-plugin-pwa": "^2.0.0"
   },
-  "main": "desktop/main.cjs"
+  "main": "desktop/main.cjs",
+  "productName": "OpenSlides"
 }

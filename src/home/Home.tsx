@@ -35,7 +35,7 @@ export function Home() {
   const refresh = () => listDecks().then(setDecks).catch(() => setError('This browser blocked local storage, so decks can’t be saved. Turn off private browsing and reload.'));
   useEffect(() => {
     refresh();
-    document.title = 'Deckforge';
+    document.title = 'OpenSlides';
   }, []);
 
   const create = async (templateId: string) => {
@@ -74,7 +74,7 @@ export function Home() {
       <header className="home-head">
         <div className="wordmark">
           <img src="favicon.svg" alt="" width={30} height={30} />
-          <span>Deckforge</span>
+          <span>OpenSlides</span>
         </div>
         <p className="home-tag">Design like Canva, control like PowerPoint. Works offline, exports real .pptx files, free and open source.</p>
         <button className="btn ghost" onClick={() => fileRef.current?.click()} disabled={busy}>

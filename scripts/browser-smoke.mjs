@@ -7,6 +7,7 @@ const page=await browser.newPage({viewport:{width:1500,height:960}});const error
 page.on('pageerror',e=>errors.push(e.message));
 try{
  await page.goto('http://127.0.0.1:5173');
+ await page.getByText('OpenSlides',{exact:true}).waitFor();assert.equal(await page.title(),'OpenSlides');
  await page.getByRole('button',{name:'New blank deck',exact:true}).click();
  const rail=page.getByRole('navigation',{name:'Creation tools'});await rail.waitFor();
  await page.getByRole('button',{name:'Add Heart',exact:true}).click();
@@ -24,7 +25,7 @@ try{
  await page.getByLabel('Agent instructions').fill('Create simple blue graphics for our presentation.');
  await page.getByRole('button',{name:'Save agent',exact:true}).click();
  assert.equal(await page.getByText('Hackathon helper',{exact:true}).count(),1);
- await rail.getByRole('button',{name:'Claude AI',exact:true}).click();
+ await rail.getByRole('button',{name:'Ask Claudia',exact:true}).click();
  await page.getByRole('button',{name:'AI settings',exact:true}).click();
  await page.getByLabel('Anthropic API key').fill('mock-key-for-ui-test');
  await page.getByRole('button',{name:'Save settings',exact:true}).click();
@@ -33,7 +34,7 @@ try{
   await route.fulfill({status:200,contentType:'application/json',body:JSON.stringify({model:data.model,stop_reason:'end_turn',usage:{input_tokens:100,output_tokens:60},content:[{type:'text',text:JSON.stringify({summary:'A violet circle',operations:[{tool:'element',name:'Violet circle',svg:'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="45" fill="#7054d7"/></svg>'}]})}]})});
  });
  await page.getByLabel('Describe your idea').fill('A violet circle');
- await page.getByRole('button',{name:'Generate with Claude',exact:true}).click();
+ await page.getByRole('button',{name:'Generate with Claudia',exact:true}).click();
  await page.getByRole('button',{name:'Apply changes',exact:true}).waitFor();
  await page.getByRole('button',{name:'Save graphics for reuse',exact:true}).click();
  await page.getByRole('button',{name:'Apply changes',exact:true}).click();
@@ -65,9 +66,9 @@ try{
  });assert.ok(exports.bytes>5000);assert.ok(exports.media>=2);assert.equal(exports.slides,1);assert.equal(exports.injected,false);
  await page.evaluate(async()=>{const {mutate,useEditor}=await import('/src/store/editor.ts');const {createFromTemplate}=await import('/src/model/templates.ts');const d=createFromTemplate('creative');mutate(deck=>{deck.title=d.title;deck.theme=d.theme;deck.layouts=d.layouts;deck.slides=d.slides;});useEditor.setState({slideId:d.slides[0].id,selection:[]});});
  await page.screenshot({path:'studio-smoke.png',fullPage:true});
- for(const [tab,file] of [['Themes','themes'],['Text','text'],['Claude AI','ai'],['Agents','agents']]){await rail.getByRole('button',{name:tab,exact:true}).click();await page.screenshot({path:`studio-${file}.png`,fullPage:true});}
+ for(const [tab,file] of [['Themes','themes'],['Text','text'],['Ask Claudia','ai'],['Agents','agents']]){await rail.getByRole('button',{name:tab,exact:true}).click();await page.screenshot({path:`studio-${file}.png`,fullPage:true});}
  await page.setViewportSize({width:1024,height:768});
  const exportButton=page.getByRole('button',{name:'Export',exact:false}).first();const presentButton=page.getByRole('button',{name:'Present',exact:true});
  for(const button of [exportButton,presentButton]){const b=await button.boundingBox();assert.ok(b&&b.x>=0&&b.x+b.width<=1024,'Primary action is outside laptop viewport');}
- assert.deepEqual(errors,[]);console.log('Browser smoke passed: galleries, themes, agents, mocked Claude request, saved elements, atomic undo, stale proposal guard, SVG rejection, every template.');
+ assert.deepEqual(errors,[]);console.log('Browser smoke passed: galleries, themes, agents, mocked Claudia request, saved elements, atomic undo, stale proposal guard, SVG rejection, every template.');
 }catch(error){await page.screenshot({path:'studio-smoke.png',fullPage:true});throw error;}finally{await browser.close();}

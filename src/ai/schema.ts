@@ -14,17 +14,17 @@ export type AiOperation =
  | {tool:'theme';name:string;colors:Record<string,string>;heading:string;body:string};
 export interface AiPlan { summary:string;operations:AiOperation[]; }
 const COLOR_KEYS=['background','surface','text','muted','primary','secondary','accent'];
-function str(v:unknown,label:string,max:number):string {if(typeof v!=='string'||!v.trim()||v.length>max)throw new Error(`Invalid ${label} in Claude's response.`);return v.trim();}
-function obj(v:unknown):Record<string,unknown>{if(!v||typeof v!=='object'||Array.isArray(v))throw new Error('Claude returned an invalid object.');return v as Record<string,unknown>;}
+function str(v:unknown,label:string,max:number):string {if(typeof v!=='string'||!v.trim()||v.length>max)throw new Error(`Invalid ${label} in Claudia's response.`);return v.trim();}
+function obj(v:unknown):Record<string,unknown>{if(!v||typeof v!=='object'||Array.isArray(v))throw new Error('Claudia returned an invalid object.');return v as Record<string,unknown>;}
 export function parseAiPlan(text:string,allowed:readonly AiTool[],textIds:readonly string[],fonts:readonly string[]):AiPlan {
-  if(text.length>250_000)throw new Error('Claude returned too much content. Try a smaller request.');
+  if(text.length>250_000)throw new Error('Claudia returned too much content. Try a smaller request.');
   const raw=obj(JSON.parse(text.trim().replace(/^```(?:json)?\s*/i,'').replace(/\s*```$/,'')));
   if(!Array.isArray(raw.operations)||raw.operations.length<1||raw.operations.length>6)throw new Error('Expected one to six design actions.');
   const singleton=new Set<string>();
   const operations=raw.operations.map(value=>{
     const o=obj(value),tool=o.tool as AiTool;
     if(!AI_TOOLS.includes(tool)||!allowed.includes(tool))throw new Error(`This agent is not allowed to use the ${String(tool)} tool.`);
-    if(tool!=='element'&&singleton.has(tool))throw new Error(`Claude repeated the ${tool} action.`);
+    if(tool!=='element'&&singleton.has(tool))throw new Error(`Claudia repeated the ${tool} action.`);
     singleton.add(tool);
     if(tool==='element')return {tool,name:str(o.name,'graphic name',80),svg:str(o.svg,'SVG',150_000)};
     if(tool==='outline')return {tool,outline:str(o.outline,'outline',16000)};
@@ -36,7 +36,7 @@ export function parseAiPlan(text:string,allowed:readonly AiTool[],textIds:readon
       return {tool,changes};
     }
     const colors=obj(o.colors),heading=str(o.heading,'heading font',80),body=str(o.body,'body font',80);
-    if(!fonts.includes(heading)||!fonts.includes(body))throw new Error('Claude chose a font that is not installed in Deckforge.');
+    if(!fonts.includes(heading)||!fonts.includes(body))throw new Error('Claudia chose a font that is not installed in OpenSlides.');
     const checked:Record<string,string>={};for(const k of COLOR_KEYS){const v=colors[k];if(typeof v!=='string'||!/^#[0-9a-f]{6}$/i.test(v))throw new Error('Invalid theme colour.');checked[k]=v;}
     return {tool:'theme' as const,name:str(o.name,'theme name',80),colors:checked,heading,body};
   });

@@ -25,7 +25,7 @@ jobs:
       - name: Browser smoke
         shell: bash
         run: |
-          npm run dev -- --host 127.0.0.1 > /tmp/deckforge-vite.log 2>&1 &
+          npm run dev -- --host 127.0.0.1 > /tmp/openslides-vite.log 2>&1 &
           for attempt in {1..30}; do curl --silent --fail http://127.0.0.1:5173 > /dev/null && break; sleep 1; done
           node scripts/browser-smoke.mjs
       - uses: actions/upload-artifact@v4
@@ -50,7 +50,7 @@ jobs:
       - name: Verify packaged application launches
         shell: pwsh
         run: |
-          $app = Start-Process -FilePath 'release/win-unpacked/Deckforge.exe' -ArgumentList '--smoke-test' -PassThru -Wait
+          $app = Start-Process -FilePath 'release/win-unpacked/OpenSlides.exe' -ArgumentList '--smoke-test' -PassThru -Wait
           if ($app.ExitCode -ne 0) { throw "Desktop smoke test failed with exit code $($app.ExitCode)" }
       - name: Checksums
         shell: pwsh
@@ -58,7 +58,7 @@ jobs:
           Get-ChildItem release/*.exe | ForEach-Object { "$((Get-FileHash $_.FullName -Algorithm SHA256).Hash.ToLower())  $($_.Name)" } | Set-Content release/SHA256SUMS.txt
       - uses: actions/upload-artifact@v4
         with:
-          name: Deckforge-Windows-x64
+          name: OpenSlides-Windows-x64
           path: |
             release/*.exe
             release/SHA256SUMS.txt
@@ -67,6 +67,6 @@ jobs:
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          $tag = "v0.2.0-hackathon-${{ github.run_number }}"
-          gh release create $tag release/*.exe release/SHA256SUMS.txt --target '${{ github.sha }}' --title 'Deckforge Studio 0.2 — Windows hackathon build' --notes-file RELEASE-NOTES.md --prerelease
+          $tag = "v0.2.1-hackathon-${{ github.run_number }}"
+          gh release create $tag release/*.exe release/SHA256SUMS.txt --target '${{ github.sha }}' --title 'OpenSlides 0.2.1 — Windows hackathon build' --notes-file RELEASE-NOTES.md --prerelease
           if ($LASTEXITCODE -ne 0) { throw 'Could not create release' }

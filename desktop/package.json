@@ -1,5 +1,5 @@
 {
-  "name": "deckforge-desktop-tools",
+  "name": "openslides-desktop-tools",
   "private": true,
   "version": "0.2.0",
   "devDependencies": {

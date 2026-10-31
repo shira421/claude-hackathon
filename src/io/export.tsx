@@ -231,7 +231,7 @@ export async function buildPptx(deck: Deck): Promise<PptxGenJS> {
   pptx.defineLayout({ name: 'DECKFORGE', width: inW, height: inH });
   pptx.layout = 'DECKFORGE';
   pptx.title = deck.title;
-  pptx.company = 'Made with Deckforge';
+  pptx.company = 'Made with OpenSlides';
   pptx.theme = { headFontFace: deck.theme.fonts.heading, bodyFontFace: deck.theme.fonts.body };
   const theme = deck.theme;
   const k = inW / deck.size.w; // inches per slide px
@@ -485,7 +485,7 @@ export async function exportPdf(deck: Deck) {
     if (i > 0) pdf.addPage([pw, ph], pw >= ph ? 'landscape' : 'portrait');
     pdf.addImage(u, 'JPEG', 0, 0, pw, ph);
   });
-  pdf.setProperties({ title: deck.title, creator: 'Deckforge' });
+  pdf.setProperties({ title: deck.title, creator: 'OpenSlides' });
   downloadBlob(pdf.output('blob'), `${safeFilename(deck.title)}.pdf`);
 }
 

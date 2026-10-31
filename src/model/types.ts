@@ -1,4 +1,4 @@
-// Core document model for a Deckforge deck.
+// Core document model for a OpenSlides deck.
 //
 // Colors and fonts can be literal values ('#1d2621', 'Inter') or theme
 // references ('theme:primary', 'theme:heading'). Theme references are what

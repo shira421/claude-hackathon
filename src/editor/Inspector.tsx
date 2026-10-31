@@ -340,7 +340,7 @@ function AnimationSettings({ els }: { els: SlideElement[] }) {
             <NumberField label="Delay" value={a.delay} step={50} min={0} max={10000} suffix="ms" onChange={(v) => set({ delay: v })} />
             <NumberField label="Order" value={a.order} min={0} max={99} onChange={(v) => set({ order: v })} />
           </div>
-          <p className="muted small">Plays in Deckforge’s slideshow. PowerPoint export keeps the layout but not animations.</p>
+          <p className="muted small">Plays in OpenSlides’s slideshow. PowerPoint export keeps the layout but not animations.</p>
         </>
       )}
     </Section>

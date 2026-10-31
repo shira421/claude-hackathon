@@ -85,7 +85,7 @@ export function PresenterPage({ id, start }: { id: string; start: number }) {
 
   useEffect(() => {
     openAudience();
-    document.title = 'Presenter view | Deckforge';
+    document.title = 'Presenter view | OpenSlides';
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 

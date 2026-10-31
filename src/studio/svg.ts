@@ -5,7 +5,7 @@ export function safeSvg(source: string): { svg: string; w: number; h: number } {
   if (typeof source !== 'string' || source.length > 150_000 || /<!DOCTYPE|<!ENTITY/i.test(source)) throw new Error('The graphic is too large or contains unsupported markup. Try a simpler prompt.');
   const doc = new DOMParser().parseFromString(source.trim(), 'image/svg+xml');
   const root = doc.documentElement;
-  if (root.localName !== 'svg' || doc.querySelector('parsererror')) throw new Error('Claude returned an invalid SVG. Try generating again.');
+  if (root.localName !== 'svg' || doc.querySelector('parsererror')) throw new Error('Claudia returned an invalid SVG. Try generating again.');
   const nodes = [root, ...Array.from(root.querySelectorAll('*'))];
   if (nodes.length > 600) throw new Error('The graphic has too many shapes. Try a simpler prompt.');
   for (const node of nodes) {
